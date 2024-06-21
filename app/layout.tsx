@@ -9,20 +9,18 @@ export const metadata: Metadata = {
   title: "InterviewGenie",
   description: "Create and share your interview experiences",
   icons: {
-    icon: [
-      {
-        url: "/Website Logo.png",
-        type: "image/png",
-      },
-    ],
+    icon: {
+      url: "/website_logo.png",
+      href: "/website_logo.png",
+    },
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <ClerkProvider>
       <html lang="en">
