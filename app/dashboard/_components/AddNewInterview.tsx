@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { chatSession } from "@/database/GeminiAiModal";
 import { useState } from "react";
 
 const AddNewInterview = () => {
@@ -18,6 +19,16 @@ const AddNewInterview = () => {
   const [jobPosition, setJobPosition] = useState<String>();
   const [jobDescrition, setJobDescrition] = useState<String>();
   const [jobExperience, setJobExperience] = useState<String>();
+
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
+    const InputPrompt = `Job position: ${jobPosition}, Job Description ${jobDescrition}, Year of Experience: ${jobExperience}. According to above given instructions make ${process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT} interview questions along with their answers in json format. Create seperate field for the question and answer in the json`;
+
+    console.log(jobDescrition,jobExperience,jobPosition)
+    const result = await chatSession.sendMessage(InputPrompt);
+
+    console.log(result.response.text());
+  };
 
   return (
     <div>
@@ -32,7 +43,7 @@ const AddNewInterview = () => {
                 Tell us more about your job interviewing
               </DialogTitle>
               <DialogDescription>
-                <form>
+                <form onSubmit={onSubmit}>
                   <h2 className="text-sm">
                     Add details about jop position/role, Job description and
                     years of experience
