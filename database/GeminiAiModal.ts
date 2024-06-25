@@ -55,3 +55,5 @@ export const chatSession = model.startChat({
   generationConfig,
   // safetySettings,
 });
+
+// now if safetySettings is not set, still the model will block the harmful content at some extent by default

@@ -11,23 +11,68 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { db } from "@/database";
 import { chatSession } from "@/database/GeminiAiModal";
+import { cn } from "@/lib/utils";
+import { useUser } from "@clerk/nextjs";
+import { Loader } from "lucide-react";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
+import { mockInterviewSchema } from "@/database/schema";
+
+type mockInterviewProps = {
+  mockInterviewId: string;
+  jsonMockResponse: string;
+  jobPosition: string;
+  jobDesc: string;
+  jobExperience: string;
+  createdBy: string;
+  createdAt?: string;
+};
 
 const AddNewInterview = () => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [jobPosition, setJobPosition] = useState<String>();
   const [jobDescrition, setJobDescrition] = useState<String>();
   const [jobExperience, setJobExperience] = useState<String>();
+  const [jsonResponse, setJsonResponse] = useState<any>([]);
+  const { user } = useUser();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async (e: any) => {
+    setLoading(true);
     e.preventDefault();
     const InputPrompt = `Job position: ${jobPosition}, Job Description ${jobDescrition}, Year of Experience: ${jobExperience}. According to above given instructions make ${process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT} interview questions along with their answers in json format. Create seperate field for the question and answer in the json`;
 
-    console.log(jobDescrition,jobExperience,jobPosition)
+    console.log(jobDescrition, jobExperience, jobPosition);
     const result = await chatSession.sendMessage(InputPrompt);
+    const refactoredResult = result.response
+      .text()
+      .replace("```json", "")
+      .replace("```", "");
+    console.log(JSON.parse(refactoredResult));
+    setJsonResponse(refactoredResult);
 
-    console.log(result.response.text());
+    if(r)
+
+    const response = await db
+      .insert(mockInterviewSchema)
+      .values({
+        mockInterviewId: uuidv4(),
+        jsonMockResponse: refactoredResult,
+        jobPosition: jobPosition,
+        jobDesc: jobDescrition,
+        jobExperience: jobExperience,
+        createdBy: user?.primaryEmailAddress?.emailAddress,
+        createdAt: moment().format("DD-MM-yyyy"),
+      })
+      .returning({
+        mockInterviewId: mockInterviewSchema.mockInterviewId,
+      });
+    setLoading(false);
+
+    console.log("Id:", response);
   };
 
   return (
@@ -83,7 +128,15 @@ const AddNewInterview = () => {
                     >
                       Cancel
                     </Button>
-                    <Button type="submit">Start Interview</Button>
+                    <Button type="submit" disabled={loading}>
+                      Start Interview
+                      <Loader
+                        className={cn(
+                          "hidden h-6 w-6 animate-spin text-white",
+                          loading && "block",
+                        )}
+                      />
+                    </Button>
                   </div>
                 </form>
               </DialogDescription>
