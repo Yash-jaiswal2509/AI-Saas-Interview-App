@@ -20,59 +20,58 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 import { mockInterviewSchema } from "@/database/schema";
-
-type mockInterviewProps = {
-  mockInterviewId: string;
-  jsonMockResponse: string;
-  jobPosition: string;
-  jobDesc: string;
-  jobExperience: string;
-  createdBy: string;
-  createdAt?: string;
-};
+import { useRouter } from "next/navigation";
 
 const AddNewInterview = () => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
-  const [jobPosition, setJobPosition] = useState<String>();
-  const [jobDescrition, setJobDescrition] = useState<String>();
-  const [jobExperience, setJobExperience] = useState<String>();
+  const [jobPosition, setJobPosition] = useState<string>("");
+  const [jobDescrition, setJobDescrition] = useState<string>("");
+  const [jobExperience, setJobExperience] = useState<string>("");
   const [jsonResponse, setJsonResponse] = useState<any>([]);
-  const { user } = useUser();
   const [loading, setLoading] = useState<boolean>(false);
+  const { user } = useUser();
+  const router = useRouter();
 
   const onSubmit = async (e: any) => {
     setLoading(true);
     e.preventDefault();
-    const InputPrompt = `Job position: ${jobPosition}, Job Description ${jobDescrition}, Year of Experience: ${jobExperience}. According to above given instructions make ${process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT} interview questions along with their answers in json format. Create seperate field for the question and answer in the json`;
 
-    console.log(jobDescrition, jobExperience, jobPosition);
-    const result = await chatSession.sendMessage(InputPrompt);
-    const refactoredResult = result.response
-      .text()
-      .replace("```json", "")
-      .replace("```", "");
-    console.log(JSON.parse(refactoredResult));
-    setJsonResponse(refactoredResult);
+    try {
+      const InputPrompt = `Job position: ${jobPosition}, Job Description ${jobDescrition}, Year of Experience: ${jobExperience}. According to above given instructions make ${process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT} interview questions along with their answers in json format. Create separate field for the question and answer in the json`;
 
-    if(r)
+      const result = await chatSession.sendMessage(InputPrompt);
+      const refactoredResult = result.response
+        .text()
+        .replace("```json", "")
+        .replace("```", "");
+      setJsonResponse(refactoredResult);
 
-    const response = await db
-      .insert(mockInterviewSchema)
-      .values({
-        mockInterviewId: uuidv4(),
-        jsonMockResponse: refactoredResult,
-        jobPosition: jobPosition,
-        jobDesc: jobDescrition,
-        jobExperience: jobExperience,
-        createdBy: user?.primaryEmailAddress?.emailAddress,
-        createdAt: moment().format("DD-MM-yyyy"),
-      })
-      .returning({
-        mockInterviewId: mockInterviewSchema.mockInterviewId,
-      });
-    setLoading(false);
+      const response = await db
+        .insert(mockInterviewSchema)
+        .values({
+          mockInterviewId: uuidv4(),
+          jsonMockResponse: refactoredResult,
+          jobPosition: jobPosition,
+          jobDesc: jobDescrition,
+          jobExperience: jobExperience,
+          createdBy: user?.primaryEmailAddress?.emailAddress || "",
+          createdAt: moment().format("DD-MM-yyyy"),
+        })
+        .returning({
+          mockInterviewId: mockInterviewSchema.mockInterviewId,
+        });
 
-    console.log("Id:", response);
+      setLoading(false);
+      console.log("Id:", response);
+
+      if (response) {
+        router.push(`/dashboard/interview/${response[0]?.mockInterviewId}`);
+      }
+      
+    } catch (error) {
+      console.log("Error:", error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -90,12 +89,13 @@ const AddNewInterview = () => {
               <DialogDescription>
                 <form onSubmit={onSubmit}>
                   <h2 className="text-sm">
-                    Add details about jop position/role, Job description and
+                    Add details about job position/role, Job description and
                     years of experience
                   </h2>
                   <div className="my-3 mt-7">
                     <label>Job Role/Job Position</label>
                     <Input
+                      className="my-1"
                       placeholder="Ex. Full Stack Developer"
                       required
                       onChange={(event) => setJobPosition(event.target.value)}
@@ -104,14 +104,16 @@ const AddNewInterview = () => {
                   <div className="my-3">
                     <label>Job Description/tech Stack</label>
                     <Textarea
+                      className="my-1"
                       placeholder="Ex. React, Angular, Node.Js, Next.js"
                       required
                       onChange={(event) => setJobDescrition(event.target.value)}
                     />
                   </div>
                   <div className="my-3">
-                    <label>Yeras of Experience</label>
+                    <label>Years of Experience</label>
                     <Input
+                      className="my-1"
                       placeholder="Ex. 5"
                       type="number"
                       max="45"
