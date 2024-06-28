@@ -7,16 +7,8 @@ import WebCam from "react-webcam";
 import { useEffect, useState } from "react";
 import { Lightbulb, WebcamIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-type mockInterviewProps = {
-  mockInterviewId: string;
-  jsonMockResponse: string;
-  jobPosition: string;
-  jobDesc: string;
-  jobExperience: string;
-  createdAt: string | null;
-  createdBy: string;
-};
+import Link from "next/link";
+import { mockInterviewProps } from "@/types/type";
 
 const page = ({ params }: { params: { interviewId: string } }) => {
   const [interviewData, setInterviewData] = useState<mockInterviewProps>();
@@ -55,7 +47,7 @@ const page = ({ params }: { params: { interviewId: string } }) => {
             </h2>
           </div>
 
-          <div className="rounded-lg border border-[#e11d48] bg-[#e11d48]/10 p-5">
+          <div className="rounded-lg border border-primary bg-primary/10 p-5">
             <h2 className="flex items-center gap-1">
               <Lightbulb color="#e11d48" fill="#e11d48" size="20" />
               <strong className="text-primary/90">Information</strong>
@@ -64,7 +56,7 @@ const page = ({ params }: { params: { interviewId: string } }) => {
               Enable your webcam and microphone to start the AI-powered mock
               interview, consisting of 10 questions. Upon completion, you will
               receive a detailed report based on your responses.
-              <b className="ml-1 text-[#e11d48]">
+              <b className="ml-1 text-primary">
                 Please note: Your video is never recorded, and you may disable
                 webcam access at any time if you choose.
               </b>
@@ -110,7 +102,9 @@ const page = ({ params }: { params: { interviewId: string } }) => {
         </div>
       </div>
       <div className="flex justify-center">
-        <Button>Start Interview</Button>
+        <Link href={`/dashboard/interview/${params.interviewId}/start`}>
+          <Button>Start Interview</Button>
+        </Link>
       </div>
     </div>
   );
