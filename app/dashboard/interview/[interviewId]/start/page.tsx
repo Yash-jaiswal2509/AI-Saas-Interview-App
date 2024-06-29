@@ -34,7 +34,7 @@ const StartInterview = ({ params }: { params: { interviewId: string } }) => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+    <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
       {/* {mockInterviewQuestions?.map((data, index) => (
         <>
           <div key={index}>{data?.question}</div>
@@ -44,10 +44,14 @@ const StartInterview = ({ params }: { params: { interviewId: string } }) => {
       <Questions
         activeQuestionIndex={activeQuestionIndex}
         mockInterviewQuestions={mockInterviewQuestions}
-        setActiveQuestionIndex = {setActiveQuestionIndex}
+        setActiveQuestionIndex={setActiveQuestionIndex}
       />
 
-      <Answers />
+      <Answers
+        mockInterviewQuestions={mockInterviewQuestions}
+        activeQuestionIndex={activeQuestionIndex}
+        interviewData={interviewData}
+      />
     </div>
   );
 };

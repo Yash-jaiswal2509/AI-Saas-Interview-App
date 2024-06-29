@@ -32,7 +32,7 @@ const Questions = ({
       <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
         {mockInterviewQuestions &&
           mockInterviewQuestions.map((data, index) => (
-            <>
+            <div key={index}>
               <h2
                 onClick={() => setActiveQuestionIndex(index)}
                 className={cn(
@@ -42,9 +42,10 @@ const Questions = ({
               >
                 Question: {index + 1}
               </h2>
-            </>
+            </div>
           ))}
       </div>
+
       <h2 className="mt-6 text-sm md:text-base">
         {mockInterviewQuestions[activeQuestionIndex]?.question}
       </h2>
@@ -64,7 +65,7 @@ const Questions = ({
           <strong>Note:</strong>
         </h2>
         <h2 className="my-2 text-sm text-primary">
-          Please click on "Record Answer" when you are ready to respond to the
+          Please click on <b>"Record Answer"</b> when you are ready to respond to the
           questions. At the conclusion of the interview, we will provide
           feedback, including the correct answers for each question and a
           comparison with your responses.
