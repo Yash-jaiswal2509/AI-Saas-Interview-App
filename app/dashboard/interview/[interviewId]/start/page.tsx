@@ -50,6 +50,7 @@ const StartInterview = ({ params }: { params: { interviewId: string } }) => {
       <Answers
         mockInterviewQuestions={mockInterviewQuestions}
         activeQuestionIndex={activeQuestionIndex}
+        setActiveQuestionIndex={setActiveQuestionIndex}
         interviewData={interviewData}
       />
     </div>
