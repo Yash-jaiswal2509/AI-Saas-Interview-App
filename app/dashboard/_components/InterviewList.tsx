@@ -29,7 +29,7 @@ const InterviewList = () => {
 
   useEffect(() => {
     user && GetInterviewList();
-  }, [user, GetInterviewList]);
+  }, [user]);
 
   return (
     <div>

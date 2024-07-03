@@ -59,7 +59,7 @@ const FeedBack = ({ params }: FeedBackProps) => {
 
   useEffect(() => {
     getFeedback();
-  }, [params.interviewId, getFeedback]);
+  }, [params.interviewId]);
 
   return (
     <div className="p-10">

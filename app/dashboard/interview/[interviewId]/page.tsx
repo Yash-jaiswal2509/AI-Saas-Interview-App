@@ -25,7 +25,7 @@ const Page = ({ params }: { params: { interviewId: string } }) => {
 
   useEffect(() => {
     getinterviewDetails();
-  },[getinterviewDetails]);
+  },[]);
 
   return (
     <div className="my-10">

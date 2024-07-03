@@ -60,7 +60,9 @@ const Answers = ({
 
   const UpdateUserAnswer = async () => {
     setLoading(true);
-    const feedBackPrompt = `Question: \${mockInterviewQuestions[activeQuestionIndex]?.question} , Answer: \${userAnswer}. Based on the question and answer, provide feedback to the candidate. You have to rate the answer on a scale of 1 to 5. 1 being the lowest and 5 being the highest. You have to provide feedback in the json format. For example: { &quot;rating&quot;: 5, &quot;feedback&quot;: &quot;Great answer, you nailed it!&quot; }. Limit the feedback to 80 characters which includes area of improvement, mistakes etc too.`;
+    
+    const feedBackPrompt = `Question: ${mockInterviewQuestions[activeQuestionIndex]?.question} , Answer: ${userAnswer}. Based on the question and answer, provide feedback to the candidate. You have to rate the answer on a scale of 1 to 5. 1 being the lowest and 5 being the highest. You have to provide feedback in the json format. For example: { "rating": 5, "feedback": "Great answer, you nailed it!" }. Limit the feedback to 80 characters which includes area of improvement, mistakes etc too.`;
+
     const result = await chatSession.sendMessage(feedBackPrompt);
     const refactoredResult = result.response
       .text()
@@ -99,7 +101,7 @@ const Answers = ({
 
   useEffect(() => {
     if (!isRecording && userAnswer.length > 10) UpdateUserAnswer();
-  }, [userAnswer, UpdateUserAnswer, isRecording]);
+  }, [userAnswer, isRecording]);
 
   return (
     <div className="mt-2 flex flex-col items-center justify-center">
