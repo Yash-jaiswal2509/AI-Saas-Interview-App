@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { mockInterviewProps } from "@/types/type";
 
-const page = ({ params }: { params: { interviewId: string } }) => {
+const Page = ({ params }: { params: { interviewId: string } }) => {
   const [interviewData, setInterviewData] = useState<mockInterviewProps>();
   const [webCamEnabled, setWebCamEnabled] = useState(false);
 
@@ -25,7 +25,7 @@ const page = ({ params }: { params: { interviewId: string } }) => {
 
   useEffect(() => {
     getinterviewDetails();
-  }, []);
+  },[interviewData]);
 
   return (
     <div className="my-10">
@@ -110,4 +110,4 @@ const page = ({ params }: { params: { interviewId: string } }) => {
   );
 };
 
-export default page;
+export default Page;
