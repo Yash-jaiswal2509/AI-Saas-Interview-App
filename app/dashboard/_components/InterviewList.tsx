@@ -33,7 +33,7 @@ const InterviewList = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-medium">Previous Mock Interviews</h2>
+      <h2 className="text-xl font-medium mt-4">Previous Mock Interviews</h2>
       <div className="my-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         {interviewList &&
           interviewList.map((interview, index) => (
