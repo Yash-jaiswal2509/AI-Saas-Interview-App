@@ -27,10 +27,6 @@ const FeedBack = ({ params }: FeedBackProps) => {
   const [openIndexes, setOpenIndexes] = useState<number[]>([]);
   const [totalRating, setTotalRating] = useState<number>(0);
 
-  useEffect(() => {
-    getFeedback();
-  }, [params.interviewId]);
-
   const getFeedback = async () => {
     const result = await db
       .select()
@@ -38,7 +34,6 @@ const FeedBack = ({ params }: FeedBackProps) => {
       .where(eq(UserAnswer.mockInterviewIdRef, params.interviewId))
       .orderBy(UserAnswer.id);
 
-    console.log(result);
     setFeedBackList(result);
     calculatetotalRating(result);
   };
@@ -61,6 +56,10 @@ const FeedBack = ({ params }: FeedBackProps) => {
 
     setTotalRating(totalRating);
   };
+
+  useEffect(() => {
+    getFeedback();
+  }, [params.interviewId, getFeedback]);
 
   return (
     <div className="p-10">
@@ -110,7 +109,9 @@ const FeedBack = ({ params }: FeedBackProps) => {
             </CollapsibleContent>
           </Collapsible>
         ))}
-      <Button className="mt-2" onClick={() => route.replace("/dashboard")}>Go Home</Button>
+      <Button className="mt-2" onClick={() => route.replace("/dashboard")}>
+        Go Home
+      </Button>
     </div>
   );
 };

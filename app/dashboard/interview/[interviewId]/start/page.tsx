@@ -31,7 +31,7 @@ const StartInterview = ({ params }: { params: { interviewId: string } }) => {
 
   useEffect(() => {
     getInterviewDetails();
-  }, [interviewData]);
+  }, [interviewData, getInterviewDetails]);
 
   return (
     <div className="grid grid-cols-1 gap-10 md:grid-cols-2">

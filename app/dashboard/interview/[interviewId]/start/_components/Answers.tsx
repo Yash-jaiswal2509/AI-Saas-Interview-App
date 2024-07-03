@@ -43,20 +43,9 @@ const Answers = ({
     useLegacyResults: false,
   });
 
-  useEffect(() => {
-    results.map((result: any) => {
-      setUserAnswer((prevAnswer) => prevAnswer + result?.transcript);
-    });
-  }, [results]);
-
-  useEffect(() => {
-    if (!isRecording && userAnswer.length > 10) UpdateUserAnswer();
-  }, [userAnswer]);
-
   const StartStopRecording = async () => {
     if (isRecording) {
       stopSpeechToText();
-      console.log(userAnswer);
       if (userAnswer.length < 10) {
         setLoading(false);
         toast("Answer is too short, please try again", {
@@ -70,8 +59,6 @@ const Answers = ({
   };
 
   const UpdateUserAnswer = async () => {
-    console.log(userAnswer);
-
     setLoading(true);
     const feedBackPrompt = `Question: \${mockInterviewQuestions[activeQuestionIndex]?.question} , Answer: \${userAnswer}. Based on the question and answer, provide feedback to the candidate. You have to rate the answer on a scale of 1 to 5. 1 being the lowest and 5 being the highest. You have to provide feedback in the json format. For example: { &quot;rating&quot;: 5, &quot;feedback&quot;: &quot;Great answer, you nailed it!&quot; }. Limit the feedback to 80 characters which includes area of improvement, mistakes etc too.`;
     const result = await chatSession.sendMessage(feedBackPrompt);
@@ -103,6 +90,16 @@ const Answers = ({
     setUserAnswer("");
     setLoading(false);
   };
+
+  useEffect(() => {
+    results.map((result: any) => {
+      setUserAnswer((prevAnswer) => prevAnswer + result?.transcript);
+    });
+  }, [results]);
+
+  useEffect(() => {
+    if (!isRecording && userAnswer.length > 10) UpdateUserAnswer();
+  }, [userAnswer, UpdateUserAnswer, isRecording]);
 
   return (
     <div className="mt-2 flex flex-col items-center justify-center">
