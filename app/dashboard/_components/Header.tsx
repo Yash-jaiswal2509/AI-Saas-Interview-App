@@ -12,8 +12,8 @@ const Header = () => {
   const pathname = usePathname();
 
   return (
-    <div className="flex px-4 py-2 justify-between items-center border-b shadow-sm">
-      <div className="flex gap-2 items-center">
+    <div className="flex items-center justify-between border-b px-4 py-2 shadow-sm">
+      <div className="flex items-center gap-2">
         <Image
           src="/website_logo.png"
           alt="logo"
@@ -24,42 +24,42 @@ const Header = () => {
         <h1
           className={cn(
             "text-2xl font-extrabold text-primary",
-            poppins.className = "font-extrabold",
+            (poppins.className = "font-extrabold"),
           )}
         >
           InterviewGenie
         </h1>
       </div>
 
-      <ul className="gap-5 hidden md:flex">
+      <ul className="hidden gap-5 md:flex">
         <li
           className={cn(
-            "hover:text-primary hover:font-bold  transition-all cursor-pointer",
-            pathname === "/dashboard" ? "text-primary font-bold" : ""
+            "cursor-pointer transition-all hover:font-bold hover:text-primary",
+            pathname === "/dashboard" ? "font-bold text-primary" : "",
           )}
         >
           Dashboard
         </li>
         <li
           className={cn(
-            "hover:text-primary hover:font-bold  transition-all cursor-pointer",
-            pathname === "/questions" ? "text-primary font-bold" : ""
+            "cursor-pointer transition-all hover:font-bold hover:text-primary",
+            pathname === "/questions" ? "font-bold text-primary" : "",
           )}
         >
           Questions
         </li>
         <li
           className={cn(
-            "hover:text-primary hover:font-bold  transition-all cursor-pointer",
-            pathname === "/upgrade" ? "text-primary font-bold" : ""
+            "cursor-pointer transition-all hover:font-bold hover:text-primary",
+            pathname === "/upgrade" ? "font-bold text-primary" : "",
           )}
         >
           Upgrade
         </li>
         <li
           className={cn(
-            "hover:text-primary hover:font-bold  transition-all cursor-pointer",
-            pathname === "/how-it-works" ? "text-primary font-bold" : ""
+            "cursor-pointer transition-all hover:font-bold hover:text-primary",
+            pathname === "/how-it-works" ? "font-bold text-primary" : "",
           )}
         >
           How It Works?

@@ -23,7 +23,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        layout: {
+          socialButtonsPlacement: "bottom",
+          logoPlacement: "outside",
+        },
+        variables: {
+          colorPrimary: "#ed1148",
+        },
+      }}
+    >
       <html lang="en">
         <body className={inter.className}>
           <Toaster />
